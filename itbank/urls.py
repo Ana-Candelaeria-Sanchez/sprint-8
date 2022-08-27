@@ -18,9 +18,11 @@ from django.urls import include, path
 from rest_framework import routers
 
 from clientes.views import UserViewSet
+from prestamos.views import PrestamoViewSet
 
 router = routers.DefaultRouter()
 router.register(r'customers', UserViewSet, basename='customer')
+router.register(r'loans', PrestamoViewSet, basename='loan')
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

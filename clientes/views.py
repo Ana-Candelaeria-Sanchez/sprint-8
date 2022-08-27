@@ -15,7 +15,7 @@ class UserViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
     def list(self, request):
-        permission_classes = [IsAuthenticated, IsAdminUser]
+        permission_classes = [IsAdminUser]
         queryset = User.objects.all()
         serializer = UserSerializer(queryset, many=True)
         return Response(serializer.data)
