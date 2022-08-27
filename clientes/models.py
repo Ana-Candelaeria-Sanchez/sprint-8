@@ -20,15 +20,12 @@ class Cliente(models.Model):
                              )
     user = models.OneToOneField(User, default=None, null=True, on_delete=models.CASCADE)
     tipo = models.ForeignKey('clientes.TipoCliente', default=None, null=True, on_delete=models.CASCADE)
-    customer_dni = models.PositiveIntegerField(db_column='customer_DNI')
+    dni = models.PositiveIntegerField(db_column='customer_DNI')
     dob = models.PositiveIntegerField(blank=True, null=True)
-    branch_id = models.IntegerField(null=True)
+    branch = models.ForeignKey('sucursales.Sucursal', null=True, on_delete=models.DO_NOTHING, default=None)
 
     class Meta:
         db_table = 'CLIENTE'
 
     def __str__(self):
         return self.user.username
-
-
-
