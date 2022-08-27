@@ -19,10 +19,12 @@ from rest_framework import routers
 
 from clientes.views import UserViewSet
 from prestamos.views import PrestamoViewSet
+from tarjetas.views import TarjetaViewSet
 
 router = routers.DefaultRouter()
 router.register(r'customers', UserViewSet, basename='customer')
 router.register(r'loans', PrestamoViewSet, basename='loan')
+router.register(r'cards', TarjetaViewSet, basename='card')
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
