@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import viewsets, status
+from rest_framework.authentication import BasicAuthentication
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -17,6 +18,7 @@ class PrestamoViewSet(viewsets.ModelViewSet):
     """
     queryset = Prestamo.objects.all().order_by('-id')
     serializer_class = PrestamoSerializer
+    authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
     def list(self, request):
@@ -47,3 +49,9 @@ class PrestamoViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_200_OK)
+
+    def destroy(self, request, pk=None):
+        if es_cliente(request.user):
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        return super().destroy(request, pk)

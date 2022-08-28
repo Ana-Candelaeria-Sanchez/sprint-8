@@ -2,7 +2,7 @@ import datetime
 import locale
 
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 
@@ -45,10 +45,19 @@ class MontoMax(models.Model):
 
 
 @receiver(post_save, sender=Prestamo)
-def create_transaction(sender, instance: Prestamo, created, **kwargs):
+def depositar_prestamo(sender, instance: Prestamo, created, **kwargs):
     if created:
         # Update account balance
         cuenta = instance.cliente.cuenta_set.order_by('tipo_id').first()
         if cuenta is not None:
             cuenta.balance += instance.total
             cuenta.save()
+
+
+@receiver(post_delete, sender=Prestamo)
+def anular_prestamo(sender, instance: Prestamo, **kwargs):
+    # Update account balance
+    cuenta = instance.cliente.cuenta_set.order_by('tipo_id').first()
+    if cuenta is not None:
+        cuenta.balance -= instance.total
+        cuenta.save()
