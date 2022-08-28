@@ -15,9 +15,8 @@ class Sucursal(models.Model):
 
 
 class Empleado(models.Model):
-    employee_id = models.AutoField(primary_key=True)
-    name = models.TextField()
-    surname = models.TextField()
+    id = models.AutoField(primary_key=True)
+    user = models.OneToOneField('auth.User', models.CASCADE, db_column='user_id', null=True)
     hire_date = models.DateField(default=datetime.date.today, null=True)
     dni = models.PositiveIntegerField(db_column='employee_DNI')
     branch = models.ForeignKey(Sucursal, models.DO_NOTHING, db_column='branch_id')

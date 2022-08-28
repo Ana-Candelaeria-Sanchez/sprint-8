@@ -2,6 +2,8 @@ import datetime
 import locale
 
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -40,3 +42,13 @@ class MontoMax(models.Model):
             return locale.currency(self.monto, grouping=True)
         else:
             return locale.currency(self.monto, grouping=True) + f" - {self.tipo.nombre}"
+
+
+@receiver(post_save, sender=Prestamo)
+def create_transaction(sender, instance: Prestamo, created, **kwargs):
+    if created:
+        # Update account balance
+        cuenta = instance.cliente.cuenta_set.order_by('tipo_id').first()
+        if cuenta is not None:
+            cuenta.balance += instance.total
+            cuenta.save()

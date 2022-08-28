@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
@@ -32,3 +33,15 @@ class SucursalViewSet(viewsets.ViewSet):
         prestamos = Prestamo.objects.filter(cliente__cliente__branch_id=pk)
         serializer = PrestamoSerializer(prestamos, many=True)
         return Response(serializer.data, status=HTTP_200_OK)
+
+
+def es_cliente(user: User):
+    if user is None:
+        return False
+
+    try:
+        empleado = user.empleado
+    except AttributeError:
+        empleado = None
+
+    return not user.is_staff and empleado is None
