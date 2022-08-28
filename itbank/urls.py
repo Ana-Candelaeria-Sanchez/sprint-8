@@ -18,6 +18,7 @@ from django.urls import include, path
 from rest_framework import routers
 
 from clientes.views import UserViewSet
+from direcciones.views import DireccionViewSet
 from prestamos.views import PrestamoViewSet
 from sucursales.views import SucursalViewSet
 from tarjetas.views import TarjetaViewSet
@@ -27,6 +28,7 @@ router.register(r'customers', UserViewSet, basename='customer')
 router.register(r'loans', PrestamoViewSet, basename='loan')
 router.register(r'cards', TarjetaViewSet, basename='card')
 router.register(r'branches', SucursalViewSet, basename='branch')
+router.register(r'addresses', DireccionViewSet, basename='address')
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
